@@ -2,9 +2,9 @@
 #
 # This program is free software; you can redistribute it and/or modify it 
 # under the terms of the GNU General Public License version 3 as published by
-# the Free Software Foundation.class 
+# the Free Software Foundation
 
-x2go::server   inherits x2go::common {
+class x2go::server   inherits x2go::common {
   package { "x2goserver-one":
     ensure => installed,
     require => [ Package[openssl,gnupg], Exec["x2go_apt_update"] ]
