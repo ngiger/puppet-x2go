@@ -11,7 +11,8 @@ class x2go::common {
   file {$x2go_dpkg_list: ensure => present,
     owner   => root,
     content => "deb http://x2go.obviously-nice.de/deb/ lenny main\n",
-    require => Exec['init_x2go_key']
+    require => Exec['init_x2go_key'],
+    notify => Exec['x2go_apt_update'],
   }
 
   exec { "init_x2go_key":
@@ -24,7 +25,7 @@ class x2go::common {
   exec {'x2go_apt_update':
     command => "apt-get update",
     path    => "/usr/bin:/usr/sbin:/bin:/sbin",
-    # refreshonly => true,
+    refreshonly => true,
     require => File["${x2go_dpkg_list}"],
   }	
 
