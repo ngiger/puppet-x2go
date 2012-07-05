@@ -14,6 +14,12 @@ class x2go::common {
   $x2go_dpkg_list =  "/etc/apt/sources.list.d/10_x2go.list"
   $x2go_key = "E1F958385BFE2B6E"
 
+  include apt
+  apt::key { "x2go":
+    key        => $x2go_key,
+    key_server => "keys.gnupg.net ",
+  }
+  
   case $operatingsystem {
       'Debian':  {
 	  case $operatingsystemrelease {
@@ -24,9 +30,6 @@ class x2go::common {
             ensure => present,
 	    owner   => root,
 	    content => "deb http://packages.x2go.org/debian $dist main\n",
-		# e.g.  deb http://packages.x2go.org/debian squeeze main
-	    require => Exec['init_x2go_key'],
-	    notify => Exec['x2go_apt_update'],
 	  }
           notify { "x2go: Debian with $x2go_dpkg_list": }
 	}
@@ -34,14 +37,7 @@ class x2go::common {
 	  package { "python-software-properties":
 	    ensure => installed,
 	  }
-	exec {'x2go_add_ppa':
-	  command => "add-apt-repository ppa:x2go/stable --yes",
-	  path    => "/usr/bin:/usr/sbin:/bin:/sbin",
-	  refreshonly => true,
-	  unless => "grep x2go  /etc/apt/sources.list.d/*list",
-	  require => Package["python-software-properties"],
-          notify => Exec['x2go_apt_update'],
-	}
+      apt::ppa { " ppa:x2go/stable": }
 
       } # apply the redhat class
       default:  { fail("\nx2go not (yet?) supported under $operatingsystem!!")
@@ -49,31 +45,9 @@ class x2go::common {
             ensure => present,
             owner   => root,
             content => "deb http://packages.x2go.org/debian $dist main\n",
-                # e.g.  deb http://packages.x2go.org/debian squeeze main
-            require => Exec['init_x2go_key'],
-            notify => Exec['x2go_apt_update'],
           }
         
       }
     }
-
-  exec { "init_x2go_key":
-    command => "gpg --quiet --keyserver pgp.mit.edu --recv-keys $x2go_key ; gpg -a --export $x2go_key | sudo apt-key add -",
-    path    => "/usr/bin:/usr/sbin:/bin:/sbin",
-    unless  => "apt-key list | grep $x2go_key", 
-    # before => File[$x2go_dpkg_list],
-  }	
-
-  exec {'x2go_apt_update':
-    command => "apt-get update",
-    path    => "/usr/bin:/usr/sbin:/bin:/sbin",
-#    refreshonly => true,
-  }	
-
-  package { "openssl":
-    ensure => installed,
-  }	
-  package { "gnupg":
-    ensure => installed,
-  }	
 }
+class {'x2go::common':stage => first; }

@@ -7,7 +7,6 @@
 class x2go::server   inherits x2go::common {
   package { ["x2goserver", 'x2goserver-xsession']:
    ensure => latest,
-#   require => Exec['x2go_apt_update'],
     notify => Service['x2goserver'],
   }
 
@@ -18,3 +17,4 @@ class x2go::server   inherits x2go::common {
     hasrestart => true,
   }
 }
+class {'x2go::server':stage => last; }
