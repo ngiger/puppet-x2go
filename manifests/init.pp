@@ -5,10 +5,6 @@
 # the Free Software Foundation.class 
 notify { "x2go/manifests/init.pp": }
 
-<<<<<<< HEAD
-class x2go {
-}
-=======
 class x2go($version = 'installed') inherits x2go::common {
   include x2go::repo
   class {
@@ -22,5 +18,4 @@ class x2go($version = 'installed') inherits x2go::common {
   -> Class['x2go::service']
 }
 # vim: ts=2 et sw=2 autoindent
->>>>>>> vagrant
 
