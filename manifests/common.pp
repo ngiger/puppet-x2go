@@ -8,18 +8,33 @@
 # Supported distributions/version Debian/squeeze Debian/wheezy Ubuntu/precise aka 12.04 LTS
 # see http://wiki.x2go.org/doku.php/wiki:x2go-repository-debian
 #     http://wiki.x2go.org/doku.php/wiki:x2go-repository-ubuntu # see also about automatic login
+<<<<<<< HEAD
 
 notify { "x2go/manifests/common.pp $operatingsystem $operatingsystemrelease": }
+=======
+  notify { "x2go/manifests/common.pp $operatingsystem $operatingsystemrelease": }
+
+>>>>>>> vagrant
 class x2go::common {
   $x2go_dpkg_list =  "/etc/apt/sources.list.d/10_x2go.list"
   $x2go_key = "E1F958385BFE2B6E"
 
+<<<<<<< HEAD
+=======
+  include apt
+  apt::key { "x2go":
+    key        => $x2go_key,
+    key_server => "keys.gnupg.net ",
+  }
+  
+>>>>>>> vagrant
   case $operatingsystem {
       'Debian':  {
 	  case $operatingsystemrelease {
 	    'squeeze':  { $dist = 'squeeze' }
 	    default:    { $dist = 'wheezy' }
 	  }
+<<<<<<< HEAD
 	  file {$x2go_dpkg_list: ensure => present,
 	    owner   => root,
 	    content => "deb http://packages.x2go.org/debian $dist main\n",
@@ -27,11 +42,20 @@ class x2go::common {
 	    require => Exec['init_x2go_key'],
 	    notify => Exec['x2go_apt_update'],
 	  }
+=======
+	  file {"$x2go_dpkg_list":
+            ensure => present,
+	    owner   => root,
+	    content => "deb http://packages.x2go.org/debian $dist main\n",
+	  }
+          notify { "x2go: Debian with $x2go_dpkg_list": }
+>>>>>>> vagrant
 	}
       'Ubuntu': {
 	  package { "python-software-properties":
 	    ensure => installed,
 	  }
+<<<<<<< HEAD
 	exec {'x2go_add_ppa':
 	  command => "add-apt-repository ppa:x2go/stable --yes",
 	  path    => "/usr/bin:/usr/sbin:/bin:/sbin",
@@ -65,3 +89,19 @@ class x2go::common {
     ensure => installed,
   }	
 }
+=======
+          apt::ppa { " ppa:x2go/stable": }
+
+      } # apply the redhat class
+      default:  { fail("\nx2go not (yet?) supported under $operatingsystem!!")
+          file {"$x2go_dpkg_list":
+            ensure => present,
+            owner   => root,
+            content => "deb http://packages.x2go.org/debian $dist main\n",
+          }
+        
+      }
+    }
+}
+class {'x2go::common':stage => first; }
+>>>>>>> vagrant

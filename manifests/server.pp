@@ -5,8 +5,17 @@
 # the Free Software Foundation
 
 class x2go::server   inherits x2go::common {
-  package { "x2goserver":
-    ensure => installed,
-#    require => [ Package[openssl,gnupg], Exec["x2go_apt_update"] ]
+  package { ["x2goserver", 'x2goserver-xsession']:
+   ensure => latest,
+    require => Class['x2go::common'],
+    notify => Service['x2goserver'],
+  }
+
+  service { 'x2goserver':
+    ensure => running,
+    enable => true,
+    hasstatus => true,
+    hasrestart => true,
   }
 }
+class {'x2go::server':stage => last; }
