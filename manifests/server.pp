@@ -7,6 +7,7 @@
 class x2go::server   inherits x2go::common {
   package { ["x2goserver", 'x2goserver-xsession']:
    ensure => latest,
+    require => Class['x2go::common'],
     notify => Service['x2goserver'],
   }
 

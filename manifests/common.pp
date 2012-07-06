@@ -37,7 +37,7 @@ class x2go::common {
 	  package { "python-software-properties":
 	    ensure => installed,
 	  }
-      apt::ppa { " ppa:x2go/stable": }
+          apt::ppa { " ppa:x2go/stable": }
 
       } # apply the redhat class
       default:  { fail("\nx2go not (yet?) supported under $operatingsystem!!")

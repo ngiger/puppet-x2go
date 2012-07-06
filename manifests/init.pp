@@ -5,7 +5,7 @@
 # the Free Software Foundation.class 
 notify { "x2go/manifests/init.pp": }
 
-class x2go($version = 'installed') {
+class x2go($version = 'installed') inherits x2go::common {
   include x2go::repo
   class {
     'x2go::package':
