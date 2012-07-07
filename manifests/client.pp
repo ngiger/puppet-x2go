@@ -6,5 +6,6 @@
 class x2go::client   inherits x2go::common {
   package { "x2goclient":
     ensure => installed,
+    require => Class['x2go::common','apt::update'],
   }	
 }

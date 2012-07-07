@@ -12,33 +12,19 @@
 
 class x2go::common {
   $x2go_dpkg_list =  "/etc/apt/sources.list.d/10_x2go.list"
-  $x2go_key = "E1F958385BFE2B6E"
-
-  include apt
-  apt::key { "x2go":
-    key        => $x2go_key,
-    key_server => "keys.gnupg.net ",
-  }
   
   case $operatingsystem {
       'Debian':  {
-	  case $operatingsystemrelease {
-	    'squeeze':  { $dist = 'squeeze' }
-	    default:    { $dist = 'wheezy' }
-	  }
-	  file {"$x2go_dpkg_list":
-            ensure => present,
-	    owner   => root,
-	    content => "deb http://packages.x2go.org/debian $dist main\n",
-	  }
-          notify { "x2go: Debian with $x2go_dpkg_list": }
+          include apt
+          include x2go::repo::debian
 	}
       'Ubuntu': {
 	  package { "python-software-properties":
 	    ensure => installed,
 	  }
-          apt::ppa { " ppa:x2go/stable": }
-
+          include apt
+#          include x2go::repo::debian
+          apt::ppa { "ppa:x2go/stable": }
       } # apply the redhat class
       default:  { fail("\nx2go not (yet?) supported under $operatingsystem!!")
           file {"$x2go_dpkg_list":
