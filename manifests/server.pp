@@ -5,11 +5,14 @@
 # the Free Software Foundation
 
 class x2go::server   inherits x2go::common {
-  package { ["x2goserver", 'x2goserver-xsession']:
-   ensure => latest,
-    require => Class['x2go::common','apt::update'],
-    notify => Service['x2goserver'],
-  }
+  notify { "Please install x2goserver by hand as it is currently broken under wheezy": }
+  
+#  package { ["x2goserver", "x2goserver-extensions", 'x2goserver-xsession']:
+#   ensure => latest,
+#    require => Class['x2go::common','apt::update'],
+#    notify => Service['x2goserver'],
+#  }
+#  }
 
   service { 'x2goserver':
     ensure => running,
