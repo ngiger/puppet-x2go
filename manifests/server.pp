@@ -3,22 +3,29 @@
 # This program is free software; you can redistribute it and/or modify it 
 # under the terms of the GNU General Public License version 3 as published by
 # the Free Software Foundation
+define x2go::server (
+  $ensure             =  latest,
+) {
+  include x2go::common
 
-class x2go::server   inherits x2go::common {
-  notify { "Please install x2goserver by hand as it is currently broken under wheezy": }
-  
-#  package { ["x2goserver", "x2goserver-extensions", 'x2goserver-xsession']:
-#   ensure => latest,
-#    require => Class['x2go::common','apt::update'],
-#    notify => Service['x2goserver'],
-#  }
-#  }
+  package { ["x2goserver", "x2goserver-extensions", 'x2goserver-xsession'
+    ]:
+    ensure => $ensure,
+    require => Class['x2go::common','apt::update'],
+    notify => Service['x2goserver'],
+  }
 
+  if ($ensure != absent) {
+      $runService = running
+      } else {
+      $runService = stopped
+    }
+    
   service { 'x2goserver':
-    ensure => running,
+    ensure => $runService,
     enable => true,
     hasstatus => true,
     hasrestart => true,
+    require => [ Package ["x2goserver"] ] ,
   }
 }
-class {'x2go::server':stage => last; }

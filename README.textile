@@ -1,5 +1,22 @@
-h1. x2go module
+h1. x2go module for Puppet
 
+This module provides classes to manage x2go client and server.
+
+h2. Examples
+
+* To install the x2go client:
+
+    @class { 'x2go::client': }@
+
+This sets ensure => present for the package. If you want to set a different
+value, you can override the x2go::params::ensure parameter using hiera.
+
+* To remove the x2go client:
+
+    @class { 'x2go::client::absent': }@
+
+* see the files under test for more examples
+    
 h2. License
 
 Copyright 2011, niklaus.giger@member.fsf.org
@@ -7,12 +24,4 @@ Copyright 2011, niklaus.giger@member.fsf.org
 This program is free software; you can redistribute  it and/or modify it under the terms of the GNU General Public License version 3 as published by 
 the Free Software Foundation.
 
-h2. Useage
-
-@git clone git://github.com/ngiger/puppet-x2go.git x2go@
-
-A node definition might look like this:
-
-@node default { include  x2go::client}@
-
-
+    

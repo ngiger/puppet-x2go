@@ -1,3 +1,1 @@
-notify { "x2go/test/init.pp": }
-
-include x2go::client
+class { 'x2go::client': }
