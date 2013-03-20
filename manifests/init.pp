@@ -3,14 +3,8 @@
 # This program is free software; you can redistribute it and/or modify it 
 # under the terms of the GNU General Public License version 3 as published by
 # the Free Software Foundation.class 
-notify { "x2go/manifests/init.pp": }
 
 class x2go($version = 'installed') inherits x2go::common {
-#  include x2go::repo
-#  include x2go::service
-#  include x2go::firewall
-
-#  Class['x2go::repo'] -> Class['x2go::service']
 }
 # vim: ts=2 et sw=2 autoindent
 
