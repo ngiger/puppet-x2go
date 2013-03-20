@@ -1,2 +1,1 @@
-notify { "x2go/test/client.pp": }
-include x2go::client
+x2go::client {"x2go-client": }

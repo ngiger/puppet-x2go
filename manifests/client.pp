@@ -3,9 +3,13 @@
 # This program is free software; you can redistribute it and/or modify it 
 # under the terms of the GNU General Public License version 3 as published by
 # the Free Software Foundation.class 
-class x2go::client   inherits x2go::common {
+define x2go::client (
+  $ensure             =  latest,
+) {
+  include x2go::common
+  
   package { "x2goclient":
-    ensure => installed,
+    ensure => $ensure,
     require => Class['x2go::common','apt::update'],
   }	
 }
