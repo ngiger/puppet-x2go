@@ -36,4 +36,3 @@ class x2go::common {
       }
     }
 }
-class {'x2go::common':stage => first; }
