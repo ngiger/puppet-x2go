@@ -2,6 +2,8 @@ h1. x2go module for Puppet
 
 This module provides classes to manage x2go client and server.
 
+You may choose to use either the baikal version (only bug-fixes) or the main.
+
 h2. Examples
 
 * To install the x2go client:
@@ -13,6 +15,7 @@ value, you can override the x2go::params::ensure parameter using hiera.
 
 * To remove the x2go client:
 
+    @class { 'x2go':   version => 'baikal', }@
     @class { 'x2go::client::absent': }@
 
 * see the files under test for more examples
