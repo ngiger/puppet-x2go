@@ -1,3 +1,8 @@
+Version 0.1.2:
+
+- x2goserver does not have status command on debian. Thanks to Carlos Sanchez for the patch!
+- Avoid warnings in the puppet forge by using 1.0.0 version. Thanks to Carlos Sanchez for the patch!
+
 Version 0.1.1:
 
 - Remove inexisting stage. Thanks to Carlos Sanchez for the patch!
