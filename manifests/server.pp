@@ -24,8 +24,9 @@ define x2go::server (
   service { 'x2goserver':
     ensure => $runService,
     enable => true,
-    hasstatus => true,
+    hasstatus => false,
     hasrestart => true,
+    status => '/usr/bin/pgrep -f x2gocleansessions',
     require => [ Package ["x2goserver"] ] ,
   }
 }
