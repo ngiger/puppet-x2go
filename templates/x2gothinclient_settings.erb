@@ -1,0 +1,94 @@
+# Copyright (C) 2010-2012 by X2Go project, http://wiki.x2go.org
+#       Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+#       Moritz 'Morty' Struebe <Moritz.Struebe@informatik.uni-erlangen.de>
+#       Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+
+# X2Go is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# X2Go is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+
+# name of this instance of the X2Go TCE (appears during thinclient boot process)
+TC_PRETTY_NAME="X2Go TCE"
+
+# Adapt to your system!!! This path fits for Debian systems. Or provide the version manually.
+TC_VERSION=`cat /usr/share/x2go/versions/VERSION.x2gothinclientmanagement`
+
+# base path for X2Go thin client files
+TC_BASE="/opt/x2gothinclient"
+
+# path to X2Go thin client chroot
+TC_CHROOT="$TC_BASE/chroot"
+
+# path to the X2Go thin client configuration
+TC_CONFIG="$TC_BASE/etc"
+
+# shell to use when maintaining X2Go thin client chroot manually
+TC_SHELL="bash"
+
+# Debian package mirror to use...
+TC_DEBMIRROR_URL="http://ftp.debian.org/debian"
+
+# Distro codename to use...
+TC_DISTRO_CODENAME="<%= @lsbdistcodename %>"
+# or use older Debian squeeze...
+#TC_DISTRO_CODENAME="squeeze"
+
+# Retrieve X2Go packages from this URL
+### FIXME: once we release this project, we have to remove the heuler area from the deburl below!!!! ###
+TC_X2GO_DEBURL="deb http://packages.x2go.org/debian $TC_DISTRO_CODENAME main heuler"
+
+# Use a http/ftp proxy during debootstrap (leave empty if direct connections to http/ftp are allowed)
+#TC_HTTP_PROXY="http://webcache.intern:3128"
+#TC_HTTPS_PROXY="http://webcache.intern:3128"
+#TC_FTP_PROXY="http://webcache.intern:3128"
+<% if  scope.function_hiera(['apt::proxy_host', false]) %>
+TC_HTTP_PROXY="http://<%=  scope.function_hiera(['apt::proxy_host','']) %>:<%=  scope.function_hiera(['apt::proxy_port','']) %>"
+<% else %>
+TC_HTTP_PROXY=""
+<% end %>
+TC_HTTPS_PROXY=""
+TC_FTP_PROXY=""
+
+# module blacklist (used during X2Go TCE creation)
+TC_MODULE_BLACKLIST="pcspkr"
+
+# tftp boot environment (PXE/syslinux files delivered via tftpd)
+TC_TFTP_BOOT="/srv/tftp"
+
+# install non-interactively... uncomment it if needed...
+TC_NONINTERACTIVE=yes
+
+echo
+echo "X2go Thin Client Environment:"
+echo "============================="
+echo "The X2Go Thin Client Environment is using the following"
+echo "settings:"
+echo
+echo "TC_PRETTY_NAME=$TC_PRETTY_NAME"
+echo "TC_VERSION=$TC_VERSION"
+echo "TC_BASE=$TC_BASE"
+echo "TC_CONFIG=$TC_CONFIG"
+echo "TC_CHROOT=$TC_CHROOT"
+echo "TC_SHELL=$TC_SHELL"
+echo "TC_DISTRO_CODENAME=$TC_DISTRO_CODENAME"
+echo "TC_DEBMIRROR_URL=$TC_DEBMIRROR_URL"
+echo "TC_X2GO_DEBURL=$TC_X2GO_DEBURL"
+echo "TC_HTTP_PROXY=$TC_HTTP_PROXY"
+echo "TC_HTTPS_PROXY=$TC_HTTPS_PROXY"
+echo "TC_FTP_PROXY=$TC_FTP_PROXY"
+echo "TC_MODULE_BLACKLIST=$TC_MODULE_BLACKLIST"
+echo "TC_TFTP_BOOT=$TC_TFTP_BOOT"
+echo
+echo "Edit /etc/x2go/x2gothinclient_settings to change this."
+echo

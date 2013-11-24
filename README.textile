@@ -1,6 +1,6 @@
 h1. x2go module for Puppet
 
-This module provides classes to manage x2go client and server.
+This module provides classes to manage x2go client, server and thin client environment (aka tce).
 
 You may choose to use either the baikal version (only bug-fixes) or the main.
 
@@ -17,6 +17,13 @@ value, you can override the x2go::params::ensure parameter using hiera.
 
     @class { 'x2go':   version => 'baikal', }@
     @class { 'x2go::client::absent': }@
+    
+    
+* To install a x2go thin client environment
+
+    @class { 'x2go::tce':   version => 'latest', export_2_network => '192.168.1.0/255.255.255.0'}@
+    
+   You will probably have to customize your installation: see the "x2go wiki":http://wiki.x2go.org/doku.php/wiki:advanced:tce:install
 
 * see the files under test for more examples
     

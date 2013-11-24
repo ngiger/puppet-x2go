@@ -30,7 +30,9 @@ class x2go::common {
           file {"$x2go_dpkg_list":
             ensure => present,
             owner   => root,
-            content => "deb http://packages.x2go.org/debian $dist main\n",
+            content => "deb http://packages.x2go.org/debian $dist main
+deb src http://packages.x2go.org/debian $dist main
+",
           }
         
       }
