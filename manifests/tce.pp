@@ -8,7 +8,7 @@
 define x2go::tce (
   $ensure             =  latest,
   $export_2_network = '172.25.0.0/255.255.0.0',
-  
+  $x2go_chroot = '/opt/x2gothinclient/chroot',  
 ) {
   include x2go::common
   
@@ -21,15 +21,13 @@ define x2go::tce (
     content => template("x2go/x2gothinclient_settings.erb"),
     }
 
- 
-  $x2go_chroot = '/opt/x2gothinclient/chroot'
-  
   exec{'x2go::tce::x2gothinclient_create':
     require => [
       Package['x2gothinclientmanagement'],
       File['/etc/x2go/x2gothinclient_settings'],
       ],
-    command => "rm -rf $x2go_chroot && echo return | sudo -iuroot x2gothinclient_create",
+      # we install also the default configuration
+    command => "rm -rf $x2go_chroot && sudo -iuroot x2gothinclient_create && sudo -iuroot x2gothinclient_update",
     path => '/usr/local/bin:/usr/bin/:/bin:/usr/sbin:/sbin',
     creates => "$x2go_chroot/etc/apt/sources.list.d/x2go.list",
   }

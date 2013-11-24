@@ -25,7 +25,7 @@ TC_PRETTY_NAME="X2Go TCE"
 TC_VERSION=`cat /usr/share/x2go/versions/VERSION.x2gothinclientmanagement`
 
 # base path for X2Go thin client files
-TC_BASE="/opt/x2gothinclient"
+TC_BASE="<%= @x2go_chroot %>"
 
 # path to X2Go thin client chroot
 TC_CHROOT="$TC_BASE/chroot"
