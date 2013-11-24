@@ -31,6 +31,7 @@ define x2go::tce (
     command => "rm -rf $x2go_chroot && sudo -iuroot x2gothinclient_create && sudo -iuroot x2gothinclient_update",
     path => '/usr/local/bin:/usr/bin/:/bin:/usr/sbin:/sbin',
     creates => "$x2go_chroot/etc/apt/sources.list.d/x2go.list",
+    timeout => 1800, # allow maximal 30 minutes for download all the stuff. Default timeout is too short
   }
   exec{'x2go::tce::x2gothinclient_preptftpboot':
     require => Exec['x2go::tce::x2gothinclient_create'],
