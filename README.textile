@@ -23,7 +23,7 @@ value, you can override the x2go::params::ensure parameter using hiera.
 
 bq. class { 'x2go::tce':  
       version => 'latest', 
-      x2go_chroot => '/opt/x2gothinclient/chroot',  
+      x2go_tce_base => '/opt/x2gothinclient',  # will have chroot and etc directories below
       export_2_network => '192.168.1.0/255.255.255.0',
     }
       

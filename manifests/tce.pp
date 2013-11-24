@@ -7,10 +7,11 @@
 
 define x2go::tce (
   $ensure             =  latest,
-  $export_2_network = '172.25.0.0/255.255.0.0',
-  $x2go_chroot = '/opt/x2gothinclient/chroot',  
+  $export_2_network   = '172.25.0.0/255.255.0.0',
+  $x2go_tce_base      = '/opt/x2gothinclient',  
 ) {
   include x2go::common
+  $x2go_chroot = "$x2go_tce_base/chroot"
   
   package { 'x2gothinclientmanagement':
     ensure => $ensure,
