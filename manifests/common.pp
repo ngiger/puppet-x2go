@@ -20,7 +20,7 @@ class x2go::common {
 	}
       'Ubuntu': {
 	  package { "python-software-properties":
-	    ensure => installed,
+	    ensure => present,
 	  }
           include apt
 #          include x2go::repo::debian
