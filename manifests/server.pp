@@ -4,7 +4,7 @@
 # under the terms of the GNU General Public License version 3 as published by
 # the Free Software Foundation
 define x2go::server (
-  $ensure             =  latest,
+  $ensure             =  present,
 ) {
   include x2go::common
 

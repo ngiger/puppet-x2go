@@ -6,7 +6,7 @@
 # Inspired by description found under http://wiki.x2go.org/doku.php/wiki:advanced:tce:install
 
 define x2go::tce (
-  $ensure             =  latest,
+  $ensure             =  present,
   $export_2_network   = '172.25.0.0/255.255.0.0',
   $x2go_tce_base      = '/opt/x2gothinclient',  
 ) {
