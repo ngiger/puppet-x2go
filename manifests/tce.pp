@@ -7,6 +7,8 @@
 
 # sudo debootstrap --variant=minbase --arch=ARCHITEKTUR CODENAME /mnt http://de.archive.ubuntu.com/ubuntu/ 
 # x2go::tce::x2go_tce_base
+
+
 class x2go::tce (
   $ensure             =  latest,
   $export_2_network   = '172.27.0.0/16',
@@ -55,6 +57,8 @@ class x2go::tce (
     notify  => Exec['x2go::tce::x2gothinclient_update'],
     }
 
+    if (false) {
+
   file {"$x2go_tce_base/etc/x2gothinclient_sessions":
     require => Exec['x2go::tce::x2gothinclient_preptftpboot'],
     notify  => Exec['x2go::tce::x2gothinclient_update'],
@@ -98,6 +102,14 @@ setdpi = false
 pack = 16m-jpeg
 ",
     }
+  } else {
+    $sessions = hiera('x2go::tce::sessions',[])
+    file {"$x2go_tce_base/etc/x2gothinclient_sessions":
+      require => Exec['x2go::tce::x2gothinclient_preptftpboot'],
+      notify  => Exec['x2go::tce::x2gothinclient_update'],
+      content => template("x2go/x2gothinclient_sessions.erb"),
+    }
+  }
   file {"$x2go_tce_base/tftp/default.cfg":
     require => Exec['x2go::tce::x2gothinclient_preptftpboot'],
     content => "
