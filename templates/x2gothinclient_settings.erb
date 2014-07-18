@@ -1,3 +1,5 @@
+# <%=  scope.function_hiera(['managed_note', '# xxxZZZ'])  %>
+# 
 # Copyright (C) 2010-2012 by X2Go project, http://wiki.x2go.org
 #       Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 #       Moritz 'Morty' Struebe <Moritz.Struebe@informatik.uni-erlangen.de>
@@ -37,10 +39,10 @@ TC_CONFIG="$TC_BASE/etc"
 TC_SHELL="bash"
 
 # Debian package mirror to use...
-TC_DEBMIRROR_URL="http://ftp.debian.org/debian"
+TC_DEBMIRROR_URL="<%= @x2go_tce_mirror %>"
 
 # Distro codename to use...
-TC_DISTRO_CODENAME="<%= @lsbdistcodename %>"
+TC_DISTRO_CODENAME="<%= @x2go_tce_os %>"
 # or use older Debian squeeze...
 #TC_DISTRO_CODENAME="squeeze"
 
@@ -53,18 +55,18 @@ TC_X2GO_DEBURL="deb http://packages.x2go.org/debian $TC_DISTRO_CODENAME main heu
 #TC_HTTPS_PROXY="http://webcache.intern:3128"
 #TC_FTP_PROXY="http://webcache.intern:3128"
 <% if  scope.function_hiera(['apt::proxy_host', false]) %>
-TC_HTTP_PROXY="http://<%=  scope.function_hiera(['apt::proxy_host','']) %>:<%=  scope.function_hiera(['apt::proxy_port','']) %>"
+TC_HTTP_PROXY=""
 <% else %>
 TC_HTTP_PROXY=""
 <% end %>
-TC_HTTPS_PROXY=""
+TC_HTTPS_PROXY="http://<%=  scope.function_hiera(['apt::proxy_host','']) %>:<%=  scope.function_hiera(['apt::proxy_port','']) %>"
 TC_FTP_PROXY=""
 
 # module blacklist (used during X2Go TCE creation)
 TC_MODULE_BLACKLIST="pcspkr"
 
 # tftp boot environment (PXE/syslinux files delivered via tftpd)
-TC_TFTP_BOOT="/srv/tftp"
+TC_TFTP_BOOT="$TC_BASE/tftp"
 
 # install non-interactively... uncomment it if needed...
 TC_NONINTERACTIVE=yes

@@ -1,1 +1,2 @@
-x2go::tce {"x2go-tce": }
+class {'x2go::tce':  }
+# include  x2go::tce
