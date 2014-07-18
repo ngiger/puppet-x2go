@@ -11,7 +11,7 @@ define x2go::server (
   package { ["x2goserver", "x2goserver-extensions", 'x2goserver-xsession'
     ]:
     ensure => $ensure,
-    require => Class['x2go::common','apt::update'],
+    require => Class['x2go::common'], #,'apt::update'],
     notify => Service['x2goserver'],
   }
 
