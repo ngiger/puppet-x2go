@@ -1,0 +1,8 @@
+#!/bin/bash
+# <%=  scope.function_hiera(['managed_note', '# managed by puppet'])  %>
+set -e # exit on error
+<% if /wheezy|squeeze|jessie/i.match(@x2go_tce_os) %>
+sudo /usr/sbin/x2gothinclient_shell "echo 'deb <%= @x2go_tce_mirror %>  <%= @x2go_tce_os %> contrib non-free' > /etc/apt/sources.list.d/<%= @x2go_tce_os %>_non-free.list"
+<% end %>
+sudo /usr/sbin/x2gothinclient_shell "apt-get update"
+sudo /usr/sbin/x2gothinclient_shell "apt-get install --yes firmware-linux firmware-linux-nonfree firmware-bnx2 firmware-bnx2x firmware-myricom firmware-netxen  firmware-qlogic  firmware-ralink firmware-realtek intel-microcode amd64-microcode"

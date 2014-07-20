@@ -34,7 +34,7 @@ class x2go::tce (
     tftp_root     => "$x2go_tce_base/tftp",
   }
 
-  notify { "Using x2go_tce_base WITH $x2go_tce_base and chroot $x2go_chroot":}
+  notify { "Using x2go_tce_base WITH $x2go_tce_base and chroot $x2go_chroot for $x2go_tce_os":}
   package { 'x2gothinclientmanagement':
     ensure => $ensure,
     require => Class['x2go::common','apt::update'],
@@ -172,9 +172,22 @@ TIMEOUT 50
     command => "rm -rf $x2go_chroot; sudo -iuroot x2gothinclient_create",
     path => '/usr/local/bin:/usr/bin/:/bin:/usr/sbin:/sbin',
     creates => "$x2go_chroot/etc/apt/sources.list.d/x2go.list",
-    notify  => Exec['x2go::tce::x2gothinclient_update'],
+    notify  => Exec['/usr/local/bin/x2gothinclient_add_firmware'],
     timeout => 1800, # allow maximal 30 minutes for download all the stuff. Default timeout is too short
   }
+
+  file{'/usr/local/bin/x2gothinclient_add_firmware':
+    require => [Exec['x2go::tce::x2gothinclient_create']],
+    content => template("x2go/x2go_install_firmware.erb"),
+    notify  => Exec['/usr/local/bin/x2gothinclient_add_firmware'],
+    mode => 0755,
+  }
+  exec{'/usr/local/bin/x2gothinclient_add_firmware':
+    command => "/usr/local/bin/x2gothinclient_add_firmware",
+    path => '/usr/local/bin:/usr/bin/:/bin:/usr/sbin:/sbin',
+    notify  => Exec['x2go::tce::x2gothinclient_update'],
+  }
+
   exec{'x2go::tce::x2gothinclient_update':
     require => [
       Package['x2gothinclientmanagement'],
@@ -183,6 +196,7 @@ TIMEOUT 50
       # we install also the default configuration
     command => "sudo -iuroot x2gothinclient_update",
     path => '/usr/local/bin:/usr/bin/:/bin:/usr/sbin:/sbin',
+    notify => Service['dnsmasq'],
   }
   exec{'x2go::tce::x2gothinclient_preptftpboot':
     require => Exec['x2go::tce::x2gothinclient_create'],
