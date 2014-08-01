@@ -8,7 +8,6 @@
 # sudo debootstrap --variant=minbase --arch=ARCHITEKTUR CODENAME /mnt http://de.archive.ubuntu.com/ubuntu/ 
 # x2go::tce::x2go_tce_base
 
-
 class x2go::tce (
   $ensure             =  latest,
   $export_2_network   = '172.27.0.0/16',
@@ -20,11 +19,19 @@ class x2go::tce (
   $boot_params        = "ltsp/i386/pxelinux.0,server,$server",
   $x2go_server        = '172.25.1.70',
   $window_manager     = 'KDE',
+  $lang               = 'de_CH.utf-8',
+  $language           = 'de_CH:de',
+  $xkbmodel           = 'pc105',
+  $xkblayout          = 'ch',
+  $groupsToLogIn      = 'praxis',
 ) {
   include x2go::common
   $x2go_chroot        = "$x2go_tce_base/chroot"
-#  $mount_point        = '/srv/exports/tce.schoebu'
   $mount_point        = $x2go_chroot
+  sshd_config { "AllowGroups":
+    ensure    => present,
+    value     => "set AllowGroup $groupsToLogIn",
+  }
 
   class {'dnsmasq::x2go_tce':
     log_dhcp      => true,
@@ -40,9 +47,31 @@ class x2go::tce (
     require => Class['x2go::common','apt::update'],
   }
   
-  file {'/etc/x2go/x2gothinclient_settings':
+  file {"/etc/x2go/x2gothinclient_settings":
     require => Class['x2go::common','apt::update'],
     content => template("x2go/x2gothinclient_settings.erb"),
+    notify  => Exec['x2go::tce::x2gothinclient_update'],
+    }
+
+  file {"/etc/x2go/x2gothinclient_start":
+    require => Class['x2go::common','apt::update'],
+    content => "x2goclient \
+           --session='Standard' \
+           --external-login=~x2gothinclient/logins \
+           --no-menu \
+           --maximize \
+           --thinclient \
+           --haltbt \
+           --link=lan \
+           --kbd-layout=$xkblayout \
+           --kbd-type=$xkbmodel \
+           --set-kbd=1 \
+           --geometry=fullscreen \
+           --read-exports-from=~x2gothinclient/export \
+           --add-to-known-hosts &
+# deactivated  --no-session-edit
+#           --pgp-card \
+",
     notify  => Exec['x2go::tce::x2gothinclient_update'],
     }
 
@@ -205,6 +234,25 @@ TIMEOUT 50
     creates => "$x2go_tftp_root/x2go-splash.png",
     }
     
+  file{"$x2go_chroot/etc/default/keyboard":
+    require => Exec['x2go::tce::x2gothinclient_update'],
+    content =>"# managed by puppet x2go/tce.pp
+XKBMODEL='$xkbmodel'
+XKBLAYOUT='$xkblayout'
+XKBVARIANT=''
+XKBOPTIONS=''
+BACKSPACE='guess'
+",
+  }
+
+  file{"$x2go_chroot/etc/default/locale":
+    require => Exec['x2go::tce::x2gothinclient_update'],
+    content =>"# managed by puppet x2go/tce.pp
+LANG=$lang
+LANGUAGE=$language
+",
+  }
+
 class { 'nfs::server':
     package => latest,
     service => running,
@@ -216,4 +264,3 @@ nfs::export { "$x2go_chroot":
         clients => [ "$export_2_network" ],
     }
 }
-
