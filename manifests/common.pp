@@ -12,7 +12,6 @@
 
 class x2go::common {
   $x2go_dpkg_list =  "/etc/apt/sources.list.d/10_x2go.list"
-  
   case $operatingsystem {
       'Debian':  {
           include apt
