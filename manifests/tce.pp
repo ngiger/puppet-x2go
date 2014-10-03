@@ -9,10 +9,11 @@
 # x2go::tce::x2go_tce_base
 
 class x2go::tce (
-  $ensure             =  latest,
+  $ensure             =  false,
   $export_2_network   = '172.27.0.0/16',
   $server             = '172.27.1.77',
   $x2go_tce_base      = '/opt/x2gothinclient',
+  $x2go_chroot        = '/opt/x2gothinclient/chroot',
   $x2go_tce_os        = 'wheezy',
   $x2go_tce_mirror    = 'http://ftp.debian.org/debian',
   $pxe_service        = "X86PC, 'Boot thinclient from network (x2go)', /pxelinux, $server",
@@ -25,6 +26,7 @@ class x2go::tce (
   $xkblayout          = 'ch',
   $groupsToLogIn      = 'praxis',
 ) {
+  if ($ensure == true) {
   include x2go::common
   $x2go_chroot        = "$x2go_tce_base/chroot"
   $mount_point        = $x2go_chroot
@@ -263,4 +265,5 @@ nfs::export { "$x2go_chroot":
         options => [ 'ro', 'async', 'no_subtree_check', 'no_root_squash'],
         clients => [ "$export_2_network" ],
     }
+  }
 }

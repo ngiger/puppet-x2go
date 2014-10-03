@@ -3,8 +3,8 @@
 # This program is free software; you can redistribute it and/or modify it 
 # under the terms of the GNU General Public License version 3 as published by
 # the Free Software Foundation
-define x2go::server (
-  $ensure             =  present,
+class x2go::server (
+  $ensure             =  false,
 ) {
   include x2go::common
 
@@ -12,21 +12,21 @@ define x2go::server (
     ]:
     ensure => $ensure,
     require => [ Class['x2go::common'], ],
-    notify => Service['x2goserver'],
+#    notify => Service['x2goserver'],
   }
 
-  if ($ensure != absent) {
+  if ($ensure != absent and $ensure != false) {
       $runService = running
-      } else {
+      service { 'x2goserver':
+        ensure => $runService,
+        enable => true,
+        hasstatus => false,
+        hasrestart => true,
+        status => '/usr/bin/pgrep -f x2gocleansessions',
+        require => [ Package ["x2goserver"] ] ,
+      }
+    } else {
       $runService = stopped
     }
     
-  service { 'x2goserver':
-    ensure => $runService,
-    enable => true,
-    hasstatus => false,
-    hasrestart => true,
-    status => '/usr/bin/pgrep -f x2gocleansessions',
-    require => [ Package ["x2goserver"] ] ,
-  }
 }
