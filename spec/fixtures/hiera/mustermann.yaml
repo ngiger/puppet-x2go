@@ -1,0 +1,26 @@
+---
+# encoding: utf-8
+# Copyright 2014 by Niklaus Giger <niklaus.giger@member.fsf.org>
+# I prefer to minimize the use of hieradata for unit tests
+# Here all values are set to different value than the default to allow a good rspec
+apt::proxy_host: proxy_mustermann
+apt::proxy_port: 8888
+x2go::version: latest
+x2go::client::ensure: true
+x2go::server::ensure: true
+x2go::tce::ensure:              true
+x2go::tce::export_2_network:   '192.169.0.0/16'
+x2go::tce::server:             '192.169.1.77'
+x2go::tce::x2go_server:        '192.169.1.70'
+x2go::tce::x2go_tce_base:      '/opt_mustermann/x2gothinclient'
+x2go::tce::x2go_chroot:        '/opt_mustermann/x2gothinclient/chroot'
+x2go::tce::x2go_tce_os:        'jessie'
+x2go::tce::x2go_tce_mirror:    'http://ftp.mustermann.debian.org/debian'
+x2go::tce::pxe_service:        "X86PC, 'Boot thinclient from network (x2go) mustermann', /pxelinux, $server"
+x2go::tce::boot_params:        "ltsp/i486/pxelinux.0,server,$server"
+x2go::tce::window_manager:     'KDE'
+x2go::tce::lang :              'de_DE.utf-8'
+x2go::tce::language:           'de_DE:de'
+x2go::tce::xkbmodel:           'pc104'
+x2go::tce::xkblayout:          'de'
+x2go::tce::groupsToLogIn:      'elexis'

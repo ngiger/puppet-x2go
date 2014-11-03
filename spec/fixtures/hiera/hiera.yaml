@@ -1,0 +1,10 @@
+---
+:backends:
+  - yaml
+:hierarchy:
+  - mustermann
+  - test
+:yaml:
+    :datadir: 'spec/fixtures/hiera'
+
+        

@@ -1,6 +1,6 @@
 # Copyright 2011, niklaus.giger@member.fsf.org
 #
-# This program is free software; you can redistribute it and/or modify it 
+# This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License version 3 as published by
 # the Free Software Foundation
 class x2go::server (
@@ -15,8 +15,10 @@ class x2go::server (
 #    notify => Service['x2goserver'],
   }
 
+  notify{"ensure $ensure": }
   if ($ensure != absent and $ensure != false) {
       $runService = running
+      notify{"runService $runService": }
       service { 'x2goserver':
         ensure => $runService,
         enable => true,
@@ -26,7 +28,8 @@ class x2go::server (
         require => [ Package ["x2goserver"] ] ,
       }
     } else {
+      notify{"runService stopped": }
       $runService = stopped
     }
-    
+
 }

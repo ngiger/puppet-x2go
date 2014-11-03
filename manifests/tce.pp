@@ -1,35 +1,55 @@
 # Copyright 2011, niklaus.giger@member.fsf.org
 #
-# This program is free software; you can redistribute it and/or modify it 
+# This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License version 3 as published by
-# the Free Software Foundation.class 
+# the Free Software Foundation.class
 # Inspired by description found under http://wiki.x2go.org/doku.php/wiki:advanced:tce:install
 
-# sudo debootstrap --variant=minbase --arch=ARCHITEKTUR CODENAME /mnt http://de.archive.ubuntu.com/ubuntu/ 
+# sudo debootstrap --variant=minbase --arch=ARCHITEKTUR CODENAME /mnt http://de.archive.ubuntu.com/ubuntu/
 # x2go::tce::x2go_tce_base
 
 class x2go::tce (
   $ensure             =  false,
   $export_2_network   = '172.27.0.0/16',
   $server             = '172.27.1.77',
+  $x2go_server        = '172.25.1.70',
   $x2go_tce_base      = '/opt/x2gothinclient',
   $x2go_chroot        = '/opt/x2gothinclient/chroot',
   $x2go_tce_os        = 'wheezy',
   $x2go_tce_mirror    = 'http://ftp.debian.org/debian',
   $pxe_service        = "X86PC, 'Boot thinclient from network (x2go)', /pxelinux, $server",
   $boot_params        = "ltsp/i386/pxelinux.0,server,$server",
-  $x2go_server        = '172.25.1.70',
   $window_manager     = 'KDE',
   $lang               = 'de_CH.utf-8',
   $language           = 'de_CH:de',
   $xkbmodel           = 'pc105',
   $xkblayout          = 'ch',
   $groupsToLogIn      = 'praxis',
+  $sessions           = { "1" => {
+                              'name'  => "'X2go Elexis on server 172.25.1.70'",
+                              'host'  => "172.25.1.70",
+                              'user'  => "a_user",
+                              'rdpserver'  => "# no RDP (Windows only)",
+                              'applications' => '[OFFICE, WWWBROWSER, MAILCLIENT, TERMINAL]',
+                              'command' => '/usr/local/bin/elexis',
+                            },
+                        "2" => {
+                              'name'  => "'Windows Client'",
+                              'host'  => "172.25.1.80",
+                              'user'  => "",
+                              'rdpserver'  => "172.25.1.80",
+                              'applications' => '[WWWBROWSER, MAILCLIENT, TERMINAL]',
+                              'command' => 'RDP',
+                            },
+                        },
 ) {
-  if ($ensure == true) {
-  include x2go::common
-  $x2go_chroot        = "$x2go_tce_base/chroot"
+  if ($ensure) {
+  if !defined(Class['dnsmasq']) {class{'dnsmasq': ensure => true, is_dnsmasq_server => true} }
+  if !defined(Class['x2go::common']) {class{'x2go::common':} }
+  if !defined(Class['x2go::server']) {class{'x2go::server': ensure => true} }
   $mount_point        = $x2go_chroot
+  $managed_note       = 'managed by puppet x2go/tce.pp'
+  include augeasproviders
   sshd_config { "AllowGroups":
     ensure    => present,
     value     => "set AllowGroup $groupsToLogIn",
@@ -48,7 +68,7 @@ class x2go::tce (
     ensure => $ensure,
     require => Class['x2go::common','apt::update'],
   }
-  
+
   file {"/etc/x2go/x2gothinclient_settings":
     require => Class['x2go::common','apt::update'],
     content => template("x2go/x2gothinclient_settings.erb"),
@@ -70,9 +90,9 @@ class x2go::tce (
            --set-kbd=1 \
            --geometry=fullscreen \
            --read-exports-from=~x2gothinclient/export \
+           --session-edit \
            --add-to-known-hosts &
-# deactivated  --no-session-edit
-#           --pgp-card \
+# $managed_note
 ",
     notify  => Exec['x2go::tce::x2gothinclient_update'],
     }
@@ -88,62 +108,14 @@ class x2go::tce (
     notify  => Exec['x2go::tce::x2gothinclient_update'],
     }
 
-    if (false) {
-
-  file {"$x2go_tce_base/etc/x2gothinclient_sessions":
-    require => Exec['x2go::tce::x2gothinclient_preptftpboot'],
-    notify  => Exec['x2go::tce::x2gothinclient_update'],
-    content => "[20100623163928371]
-defsndport = false
-useiconv = false
-iconvfrom = ISO8859-15
-height = 768
-export = 
-speed = 4
-fullscreen = true
-layout = us
-width = 1024
-quality = 9
-xdmcpserver = localhost
-soundtunnel = 1
-rdpoptions = 
-soundsystem = pulse
-print = 1
-type = pc105/us
-sndport = 4713
-usekbd = true
-fstunnel = true
-applications = OFFICE, WWWBROWSER, MAILCLIENT, TERMINAL
-host = $x2go_server
-link = ADSL
-user = vagrant
-key = 
-startsoundsystem = false
-icon =
-sound = true
-rootless = false
-name = X2go Elexis $x2go_server
-iconvto = UTF-8
-rdpserver = 
-useexports = true
-command = $window_manager
-dpi = 96
-sshport = 22
-setdpi = false
-pack = 16m-jpeg
-",
-    }
-  } else {
-    $sessions = hiera('x2go::tce::sessions',[])
     file {"$x2go_tce_base/etc/x2gothinclient_sessions":
       require => Exec['x2go::tce::x2gothinclient_preptftpboot'],
       notify  => Exec['x2go::tce::x2gothinclient_update'],
       content => template("x2go/x2gothinclient_sessions.erb"),
     }
-  }
   file {"$x2go_tce_base/tftp/default.cfg":
     require => Exec['x2go::tce::x2gothinclient_preptftpboot'],
-    content => "
+    content => "# $managed_note
 #
 # example for a main boot menu of an X2Go Thin Client
 #
@@ -185,7 +157,7 @@ MENU COLOR scrollbar    30;47      #ffff0000 #00000000 std
 MENU COLOR cmdmark      1;36;47    #e0ff0000 #00000000 std
 MENU COLOR cmdline      30;47      #ff000000 #00000000 none
 
-# possible boot profiles for ONTIMEOUT: 
+# possible boot profiles for ONTIMEOUT:
 # localboot, x2go-tce-686, x2go-tce-486
 # (... or any other profile you defined in your customized menu)
 ONTIMEOUT x2go-elexis-tce
@@ -235,10 +207,10 @@ TIMEOUT 50
     path => '/usr/local/bin:/usr/bin/:/bin:/usr/sbin:/sbin',
     creates => "$x2go_tftp_root/x2go-splash.png",
     }
-    
+
   file{"$x2go_chroot/etc/default/keyboard":
     require => Exec['x2go::tce::x2gothinclient_update'],
-    content =>"# managed by puppet x2go/tce.pp
+    content =>"# $managed_note
 XKBMODEL='$xkbmodel'
 XKBLAYOUT='$xkblayout'
 XKBVARIANT=''
@@ -249,7 +221,7 @@ BACKSPACE='guess'
 
   file{"$x2go_chroot/etc/default/locale":
     require => Exec['x2go::tce::x2gothinclient_update'],
-    content =>"# managed by puppet x2go/tce.pp
+    content =>"# $managed_note
 LANG=$lang
 LANGUAGE=$language
 ",

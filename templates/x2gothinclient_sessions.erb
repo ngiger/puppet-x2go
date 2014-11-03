@@ -1,11 +1,23 @@
-# <%=  scope.function_hiera(['managed_note', '# managed by puppet'])  %>
-<%  scope.function_hiera(['x2go::tce::sessions',[]]).each do |session_id, content| %>
-<%= content[:id] %>
+# <%=  @managed_note %>
+# <%=  @sessions %>
+<%  @sessions.each do |session_id, content| %>
+
+# values be changed via puppet by setting the corresponding hiera variable
+# ID: <%= session_id %> content<%=  content %>
+[<%= session_id %>]
+name =<%= content['name'] %>
+host = <%= content['host'] %>
+command = <%= content['command'] %>
+user = <%= content['user'] %>
+rdpserver = <%= content['rdpserver'] %>
+applications = <%= content['applications'] %>
+
+# values that cannot (yet) be changed via puppet
 defsndport = false
 useiconv = false
 iconvfrom = ISO8859-15
 height = 768
-export = 
+export =
 speed = 4
 fullscreen = true
 layout = us
@@ -13,27 +25,21 @@ width = 1024
 quality = 9
 xdmcpserver = localhost
 soundtunnel = 1
-rdpoptions = 
+rdpoptions =
 soundsystem = pulse
 print = 1
 type = pc105/us
 sndport = 4713
 usekbd = true
 fstunnel = true
-applications = [<%= content[:applications] %>]
-host = <%= content[:host] %>
 link = ADSL
-user = <%= content[:user] %>
-key = 
+key =
 startsoundsystem = false
 icon =
 sound = true
 rootless = false
-name =<%= content[:name] %>
 iconvto = UTF-8
-rdpserver = <%= content[:rdpserver] %>
 useexports = true
-command = <%= content[:command] %>
 dpi = 96
 sshport = 22
 setdpi = false

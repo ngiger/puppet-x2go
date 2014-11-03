@@ -1,0 +1,20 @@
+---
+language: ruby
+cache: bundler
+bundler_args: --without development
+#  bundle exec rake lint # crashes with an UTF-8 error. therefore excluding it
+# same for bundle exec rake validate &&
+script: "bundle exec rake spec SPEC_OPTS='--format documentation' && bundle exec rake clean build"
+matrix:
+  fast_finish: true
+  include:
+  - rvm: 1.9.3
+  - rvm: 2.1.2
+  - rvm: 2.1.2
+    env: PUPPET_GEM_VERSION="~> 3.7.0" STRICT_VARIABLES="yes"
+  # mysql has failure because of undefined variable mysql::params::kate
+  allow_failures:
+    - rvm: 1.9.3
+    - env: PUPPET_GEM_VERSION="~> 3.7.0" STRICT_VARIABLES="yes"
+notifications:
+  email: niklaus.giger@member.fsf.org

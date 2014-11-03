@@ -1,0 +1,18 @@
+# run once rake spec_prep
+# run often (avoiding download) rake spec_standalone
+fixtures:
+  forge_modules:
+      stdlib:
+          repo: "puppetlabs/stdlib"
+          ref: "4.3.2"
+      apt: "puppetlabs/apt"
+      ssh: "erwbgy/ssh"
+      nfs: "jbeard/nfs"
+      portmap: "jbeard/portmap"
+      augeasproviders: domcleal/augeasproviders
+  repositories:
+    dnsmasq:
+      repo: git://github.com/ngiger/puppet-dnsmasq.git
+      ref: master
+  symlinks:
+    x2go: "#{source_dir}"
