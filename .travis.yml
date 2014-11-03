@@ -9,7 +9,9 @@ matrix:
   fast_finish: true
   include:
   - rvm: 1.9.3
+    env: PUPPET_GEM_VERSION="3.6.2"
   - rvm: 2.1.2
+    env: PUPPET_GEM_VERSION="3.6.2"
   - rvm: 2.1.2
     env: PUPPET_GEM_VERSION="~> 3.7.0" STRICT_VARIABLES="yes"
   # mysql has failure because of undefined variable mysql::params::kate
