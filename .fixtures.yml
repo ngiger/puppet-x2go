@@ -5,6 +5,7 @@ fixtures:
       stdlib:
           repo: "puppetlabs/stdlib"
           ref: "4.3.2"
+      concat: "puppetlabs/concat"
       apt: "puppetlabs/apt"
       ssh: "erwbgy/ssh"
       nfs: "jbeard/nfs"
