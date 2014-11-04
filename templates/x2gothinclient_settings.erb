@@ -54,13 +54,14 @@ TC_X2GO_DEBURL="deb http://packages.x2go.org/debian $TC_DISTRO_CODENAME main heu
 #TC_HTTP_PROXY="http://webcache.intern:3128"
 #TC_HTTPS_PROXY="http://webcache.intern:3128"
 #TC_FTP_PROXY="http://webcache.intern:3128"
+# You may set a proxy via hiera apt::proxy_host and apt::proxy_port
 <% if  scope.function_hiera(['apt::proxy_host', false]) %>
-# Proxy set  by hiera apt::proxy_host and apt::proxy_port
 TC_HTTP_PROXY=""
+TC_HTTPS_PROXY="http://<%=  scope.function_hiera(['apt::proxy_host','']) %>:<%=  scope.function_hiera(['apt::proxy_port','']) %>"
 <% else %>
 TC_HTTP_PROXY=""
+TC_HTTPS_PROXY=""
 <% end %>
-TC_HTTPS_PROXY="http://<%=  scope.function_hiera(['apt::proxy_host','']) %>:<%=  scope.function_hiera(['apt::proxy_port','']) %>"
 TC_FTP_PROXY=""
 
 # module blacklist (used during X2Go TCE creation)

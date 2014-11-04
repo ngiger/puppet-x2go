@@ -45,7 +45,7 @@ describe 'x2go::tce' do
       should contain_file('/opt/x2gothinclient/chroot/etc/default/keyboard').with_content(/^XKBOPTIONS=''$/)
       should contain_file('/opt/x2gothinclient/chroot/etc/default/keyboard').with_content(/^BACKSPACE='guess'$/)
 
-      should contain_file('/etc/x2go/x2gothinclient_settings').with_content(/#.+Proxy set  by hiera apt::proxy_host and apt::proxy_port/)
+      should contain_file('/etc/x2go/x2gothinclient_settings').with_content(HIERA_HINT)
       should contain_file('/etc/x2go/x2gothinclient_settings').with_content(/^TC_BASE="\/opt\/x2gothinclient"$/)
 
       should contain_file('/etc/x2go/x2gothinclient_start').with_content(/^x2goclient\s+--session='Standard'\s+--external-login=~x2gothinclient\/logins\s+--no-menu\s+--maximize\s+--thinclient\s+--haltbt\s+--link=lan\s+--kbd-layout=ch\s+--kbd-type=pc105\s+--set-kbd=1\s+--geometry=fullscreen\s+--read-exports-from=~x2gothinclient\/export\s+--session-edit\s+--add-to-known-hosts/)

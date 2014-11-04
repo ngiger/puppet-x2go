@@ -16,7 +16,7 @@ WheezyFacts = { :osfamily => 'Debian',
                 :hostname   => 'fully'
               }
 Managed_tce_regexp = /managed by puppet x2go\/tce.pp/
-
+HIERA_HINT = /#.+You may set a proxy via hiera apt::proxy_host and apt::proxy_port/
 # TODO: Hope this bugs gets squashed wit a new version of rspec
 # needed if  bundle exec rspec spec/classes/ fails, but each spec/*.spec is okay when run alone
 # see https://github.com/rodjek/rspec-puppet/issues/215
