@@ -6,7 +6,7 @@
 
 class x2go($version = 'installed') {
   include x2go::common
-  if ($::x2go::client::ensure) { include x2go::client }
+#  if ($::x2go::client::ensure) { include x2go::client }
 }
 # vim: ts=2 et sw=2 autoindent
 
