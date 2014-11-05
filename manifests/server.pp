@@ -15,10 +15,8 @@ class x2go::server (
 #    notify => Service['x2goserver'],
   }
 
-  notify{"ensure $ensure": }
   if ($ensure != absent and $ensure != false) {
       $runService = running
-      notify{"runService $runService": }
       service { 'x2goserver':
         ensure => $runService,
         enable => true,
@@ -28,7 +26,6 @@ class x2go::server (
         require => [ Package ["x2goserver"] ] ,
       }
     } else {
-      notify{"runService stopped": }
       $runService = stopped
     }
 
