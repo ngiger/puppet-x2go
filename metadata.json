@@ -11,7 +11,7 @@
   "dependencies": [
     {"name":"puppetlabs/apt","version_requirement":">= 1.0.0"},
     {"name":"erwbgy/ssh","version_requirement":">= 0.2.1"},
-    {"name":"omcleal/augeasproviders","version_requirement":">= 1.2.0"},
+    {"name":"domcleal/augeasproviders","version_requirement":">= 1.2.0"},
     {"name":"ngiger/dnsmasq","version_requirement":">= 0.1.0"},
     {"name":"jbeard/nfs","version_requirement":">= 0.1.7"},
     {"name":"jbeard/portmap","version_requirement":">= 0.1.7"}
