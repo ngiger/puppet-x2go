@@ -5,7 +5,7 @@
 # Here all values are set to different value than the default to allow a good rspec
 apt::proxy_host: proxy_mustermann
 apt::proxy_port: 8888
-x2go::version: latest
+x2go::version: baikal
 x2go::client::ensure: true
 x2go::server::ensure: true
 x2go::tce::ensure:              true
