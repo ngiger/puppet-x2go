@@ -7,8 +7,6 @@ class x2go::server (
   $ensure             =  false,
 ) {
   include x2go::common
-
-
   if ($ensure) {
       ensure_packages(["x2goserver", "x2goserver-extensions", 'x2goserver-xsession'],
                       { ensure => $ensure,
@@ -28,7 +26,6 @@ class x2go::server (
     } else {
       $runService = stopped
       ensure_packages(["x2goserver", "x2goserver-extensions", 'x2goserver-xsession'], { ensure => absent, })
-      service { 'x2goserver': ensure => stopped, }
     }
 
 }
