@@ -1,4 +1,5 @@
 .bundle/
 vendor/
 pkg/
-spec/fixtures/modules
+spec/fixtures
+Gemfile.lock

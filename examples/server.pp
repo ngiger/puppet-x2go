@@ -1,0 +1,1 @@
+x2go::server {'x2go-server': }

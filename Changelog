@@ -1,3 +1,28 @@
+Version 0.3.3:
+- Resolve repo dependencies
+- Clean up dependencies with install and service class
+- Correct Issues and Source URI in metadata
+
+Version 0.3.2:
+- Remove tce example
+- Rename common class to repo
+- Add flag for server install
+- Extend el repo class (not yet ready)
+- Clean up includes, move to repo/*
+
+Version 0.3.1:
+- Fix wrong PGP key and change apt repo syntax.
+- Add stdlib as requirement
+- require puppetlabs-apt >= 2.0.0
+
+Version 0.3.0:
+- Fix rake test
+- clean up code
+- improve documentation
+
+Version 0.2.1:
+- Changes to reflect fork from ngiger/puppet-x2go
+
 Version 0.1.3:
 - Added support for x2go thin client environment
 
@@ -9,5 +34,5 @@ Version 0.1.2:
 Version 0.1.1:
 
 - Remove inexisting stage. Thanks to Carlos Sanchez for the patch!
-  
+
 Version 0.1.0:  initial release

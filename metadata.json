@@ -1,19 +1,69 @@
 {
-  "name": "ngiger-x2go",
-  "version": "0.2.0",
+  "name": "fischassetmanagement-x2go",
+  "version": "0.3.3",
   "author": "Niklaus Giger <niklaus.giger@member.fsf.org>",
   "summary": "x2go Puppet module.",
-  "license": "GNU General Public License v3 or Later (GPLv3+)",
-  "source": "",
-  "project_page": "https://github.com/ngiger/puppet-x2go",
-  "issues_url": null,
+  "license": "GPL-3.0+",
+  "source": "https://github.com/fisch-asset-management/puppet-x2go.git",
+  "project_page": "https://github.com/fisch-asset-management/puppet-x2go",
+  "issues_url": "https://github.com/fisch-asset-management/puppet-x2go/issues",
+  "operatingsystem_support": [
+//    {
+//      "operatingsystem": "RedHat",
+//      "operatingsystemrelease": [
+//        "5",
+//        "6",
+//        "7"
+//      ]
+//    },
+//    {
+//      "operatingsystem": "CentOS",
+//      "operatingsystemrelease": [
+//        "5",
+//        "6",
+//        "7"
+//      ]
+//    },
+//    {
+//      "operatingsystem": "OracleLinux",
+//      "operatingsystemrelease": [
+//        "5",
+//        "6",
+//        "7"
+//      ]
+//    },
+//    {
+//      "operatingsystem": "Scientific",
+//      "operatingsystemrelease": [
+//        "5",
+//        "6",
+//        "7"
+//      ]
+//    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04"
+      ]
+    }
+  ],
   "description": "Puppet module for x2go client and server.",
   "dependencies": [
-    {"name":"puppetlabs/apt","version_requirement":">= 1.0.0"},
-    {"name":"erwbgy/ssh","version_requirement":">= 0.2.1"},
-    {"name":"domcleal/augeasproviders","version_requirement":">= 1.2.0"},
-    {"name":"ngiger/dnsmasq","version_requirement":">= 0.1.0"},
-    {"name":"jbeard/nfs","version_requirement":">= 0.1.7"},
-    {"name":"jbeard/portmap","version_requirement":">= 0.1.7"}
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 3.0.1 < 5.0.0"
+    },
+    {
+      "name": "puppetlabs-apt",
+      "version_requirement": ">= 2.0.0 < 3.0.0"
+    }
   ]
 }
